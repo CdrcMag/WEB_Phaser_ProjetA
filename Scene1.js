@@ -22,8 +22,16 @@ var config = {
 
     //Joueur principal
     var player;
+
     var waters;
     var fish;
+
+    //Références des touches
+    var key_A;
+    var key_Z;
+    var key_E;
+    var key_R;
+
 
     function preload ()
     {
@@ -136,9 +144,19 @@ var config = {
 
         fish = this.physics.add.sprite(600,500, 'fish_1');
 
+        key_A = this.input.keyboard.addKey('A');
+        key_Z = this.input.keyboard.addKey('Z');
+        key_E = this.input.keyboard.addKey('E');
+        key_R = this.input.keyboard.addKey('R');
+
+        //console.log(key_A);
     }
 
-    var isFishing = false;
+
+    var Key_A_isPressed = false;
+    var Key_Z_isPressed = false;
+    var Key_E_isPressed = false;
+    var Key_R_isPressed = false;
 
     function update ()
     {
@@ -146,17 +164,64 @@ var config = {
         if(this.cursorKeys.space.isDown)
         {
             player.anims.play('fishing', true);
-            isFishing = true;
-
         }
         else
         {
             player.anims.play('idle', true);
-            isFishing = false;
         }
+
         
         MoveFish(fish, -3);
-  
+        
+        //Input handling
+        if(key_A.isDown)
+        {
+            //console.log('A');
+        }
+        if(key_Z.isDown)
+        {
+            //console.log('Z');
+        }
+        if(key_E.isDown)
+        {
+            //console.log('E');
+        }
+        if(key_R.isDown)
+        {
+            //console.log('R');
+        }
+
+        //Est appelé qu'une fois
+        //Key -> A
+        if(Phaser.Input.Keyboard.JustDown(key_A))
+            Key_A_isPressed = true;
+        if(Phaser.Input.Keyboard.JustUp(key_A))
+            Key_A_isPressed = false;
+
+        //Key -> Z
+        if(Phaser.Input.Keyboard.JustDown(key_Z))
+            Key_Z_isPressed = true;
+        if(Phaser.Input.Keyboard.JustUp(key_Z))
+            Key_Z_isPressed = false;
+
+        //Key -> E
+        if(Phaser.Input.Keyboard.JustDown(key_E))
+            Key_E_isPressed = true;
+        if(Phaser.Input.Keyboard.JustUp(key_E))
+            Key_E_isPressed = false;
+
+        //Key -> R
+        if(Phaser.Input.Keyboard.JustDown(key_R))
+            Key_R_isPressed = true;
+        if(Phaser.Input.Keyboard.JustUp(key_R))
+            Key_R_isPressed = false;
+
+
+
+        
+        console.log(Key_E_isPressed);
+
+        
     }
 
     
