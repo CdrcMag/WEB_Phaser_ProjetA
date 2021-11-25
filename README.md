@@ -16,10 +16,10 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 - Implémentation basique de la direction artistique
 - Développement core gameplay (pêcher à différentes hauteurs)
 
-<table>
+<table style="border: none;">
 	<tr>
-		<td><img src="Captures/screenshot_1.PNG" width="300"></td>
-		<td><img src="Captures/fishing_gif_1.gif" width="300"></td>
+		<td><img src="Captures/screenshot_1.PNG" width="400"></td>
+		<td><img src="Captures/fishing_gif_1.gif" width="400"></td>
 	</tr>
 </table>
 
