@@ -32,6 +32,16 @@ var config = {
     var key_E;
     var key_R;
 
+    var fishingLines;
+    var once_a = true;
+    var once_z = true;
+    var once_e = true;
+    var once_r = true;
+
+    var Key_A_isPressed = false;
+    var Key_Z_isPressed = false;
+    var Key_E_isPressed = false;
+    var Key_R_isPressed = false;
 
     function preload ()
     {
@@ -48,6 +58,12 @@ var config = {
         this.load.image('herb4', 'assets/Objects/Grass4.png');
         this.load.image('Pillar1', 'assets/Objects/Pillar_1.png');
         this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
+
+        //Lignes de pêche
+        this.load.image('line_a', 'assets/Objects/line_a.png');
+        this.load.image('line_z', 'assets/Objects/line_z.png');
+        this.load.image('line_e', 'assets/Objects/line_e.png');
+        this.load.image('line_r', 'assets/Objects/line_r.png');
 
         //Chargement des animations
         this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -150,18 +166,17 @@ var config = {
         key_R = this.input.keyboard.addKey('R');
 
         //console.log(key_A);
+        fishingLines = this.physics.add.staticGroup();
+        
     }
 
 
-    var Key_A_isPressed = false;
-    var Key_Z_isPressed = false;
-    var Key_E_isPressed = false;
-    var Key_R_isPressed = false;
+
 
     function update ()
     {
         //Animations du joueur
-        if(this.cursorKeys.space.isDown)
+        if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)
         {
             player.anims.play('fishing', true);
         }
@@ -216,15 +231,55 @@ var config = {
         if(Phaser.Input.Keyboard.JustUp(key_R))
             Key_R_isPressed = false;
 
-
-
-        
-        console.log(Key_E_isPressed);
-
-        
+//===========================================================================//
+        if(Key_A_isPressed && once_a == true)
+        {
+            fishingLines.create(209, 505, 'line_a');
+            once_a = false;
+        }
+        if(!Key_A_isPressed && once_a == false)
+        {
+            fishingLines.children.entries[0].destroy();
+            once_a = true;
+        }
+        //---------------------------------------------------
+        if(Key_Z_isPressed && once_z == true)
+        {
+            fishingLines.create(209, 505, 'line_z');
+            once_z = false;
+        }
+        if(!Key_Z_isPressed && once_z == false)
+        {
+            fishingLines.children.entries[0].destroy();
+            once_z = true;
+        }
+        //---------------------------------------------------
+        if(Key_E_isPressed && once_e == true)
+        {
+            fishingLines.create(209, 505, 'line_e');
+            once_e = false;
+        }
+        if(!Key_E_isPressed && once_e == false)
+        {
+            fishingLines.children.entries[0].destroy();
+            once_e = true;
+        }
+        //---------------------------------------------------
+        if(Key_R_isPressed && once_r == true)
+        {
+            fishingLines.create(209, 505, 'line_r');
+            once_r = false;
+        }
+        if(!Key_R_isPressed && once_r == false)
+        {
+            fishingLines.children.entries[0].destroy();
+            once_r = true;
+        }
     }
 
     
+    
+
 
 function MoveFish(fish, speed)
 {
