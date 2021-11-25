@@ -18,8 +18,8 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 
 <table style="border: none;">
 	<tr>
-		<td style="border: none;"><img src="Captures/screenshot_1.PNG" width="400"></td>
-		<td style="border: none;"><img src="Captures/fishing_gif_1.gif" width="400"></td>
+		<td style="border-width: 0;"><img src="Captures/screenshot_1.PNG" width="400"></td>
+		<td style="border-width: 0;"><img src="Captures/fishing_gif_1.gif" width="400"></td>
 	</tr>
 </table>
 
