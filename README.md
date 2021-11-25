@@ -7,4 +7,4 @@ Phaser est un framework de jeu 2D utilisé pour créer des jeux en HTML5. Il uti
 ///
 
 <img src="Captures/screenshot_1.PNG" width="500">
-<img src="Captures/fishing_gif_1.GIF" width="500">
+<img src="Captures/fishing_gif_1.gif" width="500">
