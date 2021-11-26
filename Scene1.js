@@ -275,6 +275,13 @@ var config = {
             fishingLines.children.entries[0].destroy();
             once_r = true;
         }
+
+        // Apparition et déplacement controlés des poissons 
+
+
+
+
+
     }
 
     
