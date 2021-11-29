@@ -24,10 +24,12 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 </table>
 
 
-
-
-
-
 ### Au 03/12/21
+- Ajout du crochet 
+- Collisions entre le crochet et les poissons
+- Système d'apparition des poissons 
+
+
+
 
 ### Au 11/12/21

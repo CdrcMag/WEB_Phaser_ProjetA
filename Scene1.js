@@ -23,16 +23,33 @@ var config = {
     //Joueur principal
     var player;
 
+    //Décorations
     var waters;
-    var fish;
 
-    //Références des touches
+    //Gameplay
+    var fishSpawnPointX = 850;
+    var fishSpawnPointY_a = 467;
+    var fishSpawnPointY_z = 497;
+    var fishSpawnPointY_e = 527;
+    var fishSpawnPointY_r = 557;
+
+    var hook;
+    var isFishInHook = false;
+
+    var fishingLines;
+    var fish;
+    var f;
+    var fishes;
+    var f2;
+    var f3;
+
+    //Inputs
     var key_A;
     var key_Z;
     var key_E;
     var key_R;
 
-    var fishingLines;
+    
     var once_a = true;
     var once_z = true;
     var once_e = true;
@@ -43,6 +60,9 @@ var config = {
     var Key_E_isPressed = false;
     var Key_R_isPressed = false;
 
+    
+
+
     function preload ()
     {
         //Chargement des assets
@@ -52,6 +72,7 @@ var config = {
         this.load.image('Water', 'assets/Objects/Water_Simple.png');
         this.load.image('Water2', 'assets/Objects/Water_Simple_3.png');
         this.load.image('fish_1', 'assets/Objects/Catch/3.png');
+        this.load.image('fish_2', 'assets/Objects/Catch/1.png');
         this.load.image('herb1', 'assets/Objects/Grass1.png');
         this.load.image('herb2', 'assets/Objects/Grass2.png');
         this.load.image('herb3', 'assets/Objects/Grass3.png');
@@ -64,6 +85,7 @@ var config = {
         this.load.image('line_z', 'assets/Objects/line_z.png');
         this.load.image('line_e', 'assets/Objects/line_e.png');
         this.load.image('line_r', 'assets/Objects/line_r.png');
+        this.load.image('hook', 'assets/Objects/hook.png');
 
         //Chargement des animations
         this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -158,8 +180,6 @@ var config = {
         this.add.image(9,569, 'Pillar2');
         this.add.image(100, 590, 'herb1');
 
-        fish = this.physics.add.sprite(600,500, 'fish_1');
-
         key_A = this.input.keyboard.addKey('A');
         key_Z = this.input.keyboard.addKey('Z');
         key_E = this.input.keyboard.addKey('E');
@@ -168,13 +188,33 @@ var config = {
         //console.log(key_A);
         fishingLines = this.physics.add.staticGroup();
         
+        hook = this.physics.add.sprite(-200,-200, 'hook');
+        fishes = this.physics.add.group();
+
+        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1');
+        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_1');
+
+        fishes.children.entries[0].name= "Paul";
+        fishes.children.entries[1].name= "Marcus";
+
+        this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);
+        //console.log(fishes.children.entries.length);
+
     }
 
-
+ 
 
 
     function update ()
     {
+
+        for (var i = 0; i < fishes.children.entries.length; i++) 
+        {
+            MoveFish(fishes.children.entries[i], -3);
+        }
+
+
+
         //Animations du joueur
         if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)
         {
@@ -183,27 +223,6 @@ var config = {
         else
         {
             player.anims.play('idle', true);
-        }
-
-        
-        MoveFish(fish, -3);
-        
-        //Input handling
-        if(key_A.isDown)
-        {
-            //console.log('A');
-        }
-        if(key_Z.isDown)
-        {
-            //console.log('Z');
-        }
-        if(key_E.isDown)
-        {
-            //console.log('E');
-        }
-        if(key_R.isDown)
-        {
-            //console.log('R');
         }
 
         //Est appelé qu'une fois
@@ -234,59 +253,86 @@ var config = {
 //===========================================================================//
         if(Key_A_isPressed && once_a == true)
         {
-            fishingLines.create(209, 505, 'line_a');
+            fishingLines.create(209, 495, 'line_a');
+            SpawnHook(209, 460);
             once_a = false;
         }
         if(!Key_A_isPressed && once_a == false)
         {
             fishingLines.children.entries[0].destroy();
+            CheckIfHasFish();
+            DispawnHook();
             once_a = true;
         }
         //---------------------------------------------------
         if(Key_Z_isPressed && once_z == true)
         {
-            fishingLines.create(209, 505, 'line_z');
+            fishingLines.create(209, 495, 'line_z');
+            SpawnHook(209, 490);
             once_z = false;
         }
         if(!Key_Z_isPressed && once_z == false)
         {
             fishingLines.children.entries[0].destroy();
+            CheckIfHasFish();
+            DispawnHook();
             once_z = true;
         }
         //---------------------------------------------------
         if(Key_E_isPressed && once_e == true)
         {
-            fishingLines.create(209, 505, 'line_e');
+            fishingLines.create(209, 495, 'line_e');
+            SpawnHook(209, 520);
             once_e = false;
         }
         if(!Key_E_isPressed && once_e == false)
         {
             fishingLines.children.entries[0].destroy();
+            CheckIfHasFish();
+            DispawnHook();
             once_e = true;
         }
         //---------------------------------------------------
         if(Key_R_isPressed && once_r == true)
         {
-            fishingLines.create(209, 505, 'line_r');
+            fishingLines.create(209, 495, 'line_r');
+            SpawnHook(209, 555);
             once_r = false;
         }
         if(!Key_R_isPressed && once_r == false)
         {
             fishingLines.children.entries[0].destroy();
+            CheckIfHasFish();
+            DispawnHook();
             once_r = true;
         }
 
-        // Apparition et déplacement controlés des poissons 
-
-
-
-
-
+        isFishInHook = this.physics.overlap(hook, fish);
     }
 
-    
-    
+var currentFish;
 
+function FishIsInHook(hook, fish)
+{
+    currentFish = fish;
+}
+
+function CheckIfHasFish()
+{
+    if(currentFish)
+        currentFish.disableBody(true, true);
+}
+    
+function SpawnHook(x, y)
+{
+    hook.x = x;
+    hook.y = y;
+}
+function DispawnHook()
+{
+    hook.x = -200;
+    hook.y = -200;
+}
 
 function MoveFish(fish, speed)
 {
