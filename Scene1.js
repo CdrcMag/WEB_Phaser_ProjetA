@@ -60,8 +60,6 @@ var config = {
     var Key_E_isPressed = false;
     var Key_R_isPressed = false;
 
-    
-
 
     function preload ()
     {
@@ -79,8 +77,10 @@ var config = {
         this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
 
         //Poissons
-        this.load.image('fish_1', 'assets/Objects/Catch/3_solo_1.png');
-        this.load.image('fish_6', 'assets/Objects/Catch/6_solo.png');
+        this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');
+        this.load.image('fish_2', 'assets/Objects/Catch/2_solo.png');
+        this.load.image('fish_3', 'assets/Objects/Catch/3_solo.png');
+        this.load.image('fish_4', 'assets/Objects/Catch/4_solo.png');
 
         //Lignes de pêche
         this.load.image('line_a', 'assets/Objects/line_a.png');
@@ -92,8 +92,11 @@ var config = {
         //Chargement des animations
         this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('player_fishing', 'assets/Fisherman/Fisherman_fish.png', { frameWidth: 48, frameHeight: 48 });
-        this.load.spritesheet('fish_1_anim', 'assets/Objects/Catch/3_solo.png', { frameWidth: 20, frameHeight: 12 });
-        this.load.spritesheet('fish_6_anim', 'assets/Objects/Catch/6_anim.png', { frameWidth: 54, frameHeight: 22 });
+
+        this.load.spritesheet('fish_1_anim', 'assets/Objects/Catch/1_anim.png', { frameWidth: 20, frameHeight: 12 });
+        this.load.spritesheet('fish_2_anim', 'assets/Objects/Catch/2_anim.png', { frameWidth: 16, frameHeight: 12 });
+        this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
+        this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
         
     }
 
@@ -115,15 +118,31 @@ var config = {
         //Ajout du joueur
         player = this.physics.add.sprite(190, 398, 'fisherman');
 
+       
         this.anims.create({
             key: 'fish_1_move',
             frames: this.anims.generateFrameNumbers('fish_1_anim', { start: 0, end: 1 }),
             frameRate: 6,
             repeat: -1
             });
+    
         this.anims.create({
-            key: 'fish_6_move',
-            frames: this.anims.generateFrameNumbers('fish_6_anim', { start: 0, end: 1 }),
+            key: 'fish_2_move',
+            frames: this.anims.generateFrameNumbers('fish_2_anim', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+            });
+
+        this.anims.create({
+            key: 'fish_3_move',
+            frames: this.anims.generateFrameNumbers('fish_3_anim', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+            });
+    
+        this.anims.create({
+            key: 'fish_4_move',
+            frames: this.anims.generateFrameNumbers('fish_4_anim', { start: 0, end: 1 }),
             frameRate: 6,
             repeat: -1
             });
@@ -201,7 +220,6 @@ var config = {
         key_E = this.input.keyboard.addKey('E');
         key_R = this.input.keyboard.addKey('R');
 
-        //console.log(key_A);
         fishingLines = this.physics.add.staticGroup();
         
         hook = this.physics.add.sprite(-200,-200, 'hook');
@@ -209,33 +227,24 @@ var config = {
         //Groupe ou les poissons apparaitront
         fishes = this.physics.add.group();
 
-        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1').setScale(1.5);
-        fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_1').setScale(1.5);
-        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_6').setScale(0.8);
-        fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_1').setScale(1.5);
-
-        
-        fishes.children.entries[2].name= "Marcus";
-
-        console.log(fishes.children.entries[0]);
+        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1');
+        fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_2');
+        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_3');
+        fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_4');
 
        for (var i = 0; i < fishes.children.entries.length; i++) 
         {
             if(fishes.children.entries[i].y == fishSpawnPointY_a)
-                fishes.children.entries[y].name= "Paul"; 
+                fishes.children.entries[i].name = "Paul"; 
             if(fishes.children.entries[i].y == fishSpawnPointY_z)
-                fishes.children.entries[y].name= "Britney"; 
+                fishes.children.entries[i].name = "Britney"; 
             if(fishes.children.entries[i].y == fishSpawnPointY_e)
-                fishes.children.entries[y].name= "Marcus"; 
+                fishes.children.entries[i].name = "Marcus"; 
             if(fishes.children.entries[i].y == fishSpawnPointY_r)
-                fishes.children.entries[y].name= "Kimberly"; 
+                fishes.children.entries[i].name = "Kimberly"; 
         }
 
-        this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);
-        //console.log(fishes.children.entries.length);
-
-
-        
+        this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);        
 
     }
 
@@ -244,7 +253,11 @@ var config = {
         if(fish.name == "Paul")
             fish.anims.play('fish_1_move', true);
         if(fish.name == "Marcus")
-            fish.anims.play('fish_6_move', true);
+            fish.anims.play('fish_2_move', true);
+        if(fish.name == "Britney")
+            fish.anims.play('fish_3_move', true);
+        if(fish.name == "Kimberly")
+            fish.anims.play('fish_4_move', true);
     }
 
 
@@ -271,11 +284,8 @@ var config = {
         for (var i = 0; i < fishes.children.entries.length; i++) 
         {
             MoveFish(fishes.children.entries[i], -3);
-            //fishes.children.entries[i].anims.play('fish_1_move', true);
             HandleAnimation(fishes.children.entries[i]);
         }
-
-        
 
         //Animations du joueur
         if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)
@@ -287,7 +297,6 @@ var config = {
             player.anims.play('idle', true);
         }
 
-        //Est appelé qu'une fois
         //Key -> A
         if(Phaser.Input.Keyboard.JustDown(key_A))
             Key_A_isPressed = true;
@@ -404,3 +413,4 @@ function MoveFish(fish, speed)
         fish.x = 850;
     }
 }
+
