@@ -1,4 +1,9 @@
-//===========================================//
+//===========================================================================================================//
+//===========================================================================================================//
+// FISHING HERO - Cédric Maggay - Ludus Academie
+//===========================================================================================================//
+//===========================================================================================================//
+
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -16,9 +21,14 @@ var config = {
         update: update
     }
 };
-//===========================================//
+
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              VARIABLES
+//===========================================================================================================//
+//===========================================================================================================//
+
     var game = new Phaser.Game(config);
-//===========================================//
 
     //Joueur principal
     var player;
@@ -60,326 +70,342 @@ var config = {
     var Key_E_isPressed = false;
     var Key_R_isPressed = false;
 
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              PRELOAD
+//===========================================================================================================//
+//===========================================================================================================//
+function preload ()
+{
+    //Chargement des assets
+    this.load.image('Maison', 'assets/Objects/Fishing_hut.png');
+    this.load.image('fisherman', 'assets/Fisherman/Fisherman.png');
+    this.load.image('Background', 'assets/Autres/background.png');
+    this.load.image('Water', 'assets/Objects/Water_Simple.png');
+    this.load.image('Water2', 'assets/Objects/Water_Simple_3.png');
+    this.load.image('herb1', 'assets/Objects/Grass1.png');
+    this.load.image('herb2', 'assets/Objects/Grass2.png');
+    this.load.image('herb3', 'assets/Objects/Grass3.png');
+    this.load.image('herb4', 'assets/Objects/Grass4.png');
+    this.load.image('Pillar1', 'assets/Objects/Pillar_1.png');
+    this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
 
-    function preload ()
-    {
-        //Chargement des assets
-        this.load.image('Maison', 'assets/Objects/Fishing_hut.png');
-        this.load.image('fisherman', 'assets/Fisherman/Fisherman.png');
-        this.load.image('Background', 'assets/Autres/background.png');
-        this.load.image('Water', 'assets/Objects/Water_Simple.png');
-        this.load.image('Water2', 'assets/Objects/Water_Simple_3.png');
-        this.load.image('herb1', 'assets/Objects/Grass1.png');
-        this.load.image('herb2', 'assets/Objects/Grass2.png');
-        this.load.image('herb3', 'assets/Objects/Grass3.png');
-        this.load.image('herb4', 'assets/Objects/Grass4.png');
-        this.load.image('Pillar1', 'assets/Objects/Pillar_1.png');
-        this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
+    //Poissons
+    this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');
+    this.load.image('fish_2', 'assets/Objects/Catch/2_solo.png');
+    this.load.image('fish_3', 'assets/Objects/Catch/3_solo.png');
+    this.load.image('fish_4', 'assets/Objects/Catch/4_solo.png');
 
-        //Poissons
-        this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');
-        this.load.image('fish_2', 'assets/Objects/Catch/2_solo.png');
-        this.load.image('fish_3', 'assets/Objects/Catch/3_solo.png');
-        this.load.image('fish_4', 'assets/Objects/Catch/4_solo.png');
+    //Lignes de pêche
+    this.load.image('line_a', 'assets/Objects/line_a.png');
+    this.load.image('line_z', 'assets/Objects/line_z.png');
+    this.load.image('line_e', 'assets/Objects/line_e.png');
+    this.load.image('line_r', 'assets/Objects/line_r.png');
+    this.load.image('hook', 'assets/Objects/hook.png');
 
-        //Lignes de pêche
-        this.load.image('line_a', 'assets/Objects/line_a.png');
-        this.load.image('line_z', 'assets/Objects/line_z.png');
-        this.load.image('line_e', 'assets/Objects/line_e.png');
-        this.load.image('line_r', 'assets/Objects/line_r.png');
-        this.load.image('hook', 'assets/Objects/hook.png');
+    //Chargement des animations
+    this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
+    this.load.spritesheet('player_fishing', 'assets/Fisherman/Fisherman_fish.png', { frameWidth: 48, frameHeight: 48 });
 
-        //Chargement des animations
-        this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
-        this.load.spritesheet('player_fishing', 'assets/Fisherman/Fisherman_fish.png', { frameWidth: 48, frameHeight: 48 });
+    this.load.spritesheet('fish_1_anim', 'assets/Objects/Catch/1_anim.png', { frameWidth: 20, frameHeight: 12 });
+    this.load.spritesheet('fish_2_anim', 'assets/Objects/Catch/2_anim.png', { frameWidth: 16, frameHeight: 12 });
+    this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
+    this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
+    //
+    this.load.audio('Song1', 'assets/TheWhiteStripes_SevenNationArmy.mp3');
+}
 
-        this.load.spritesheet('fish_1_anim', 'assets/Objects/Catch/1_anim.png', { frameWidth: 20, frameHeight: 12 });
-        this.load.spritesheet('fish_2_anim', 'assets/Objects/Catch/2_anim.png', { frameWidth: 16, frameHeight: 12 });
-        this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
-        this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
-        
-    }
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              CREATE
+//===========================================================================================================//
+//===========================================================================================================//
+function create ()
+{
+    //Création de l'arrière plan
+    this.add.image(400, 300, 'Background');
 
-    function create ()
-    {
-        //Création de l'arrière plan
-        this.add.image(400, 300, 'Background');
+    //Création de la maison
+    this.add.image(100, 420, 'Maison');
 
-        //Création de la maison
-        this.add.image(100, 420, 'Maison');
+    //Boucle pour afficher l'eau
+    waters = this.physics.add.group({
+        key: 'Water2',
+        repeat: 3,
+        setXY: { x: 5, y: 520, stepX: 260 }});
+   
 
-        //Boucle pour afficher l'eau
-        waters = this.physics.add.group({
-            key: 'Water2',
-            repeat: 3,
-            setXY: { x: 5, y: 520, stepX: 260 }});
-       
+    //Ajout du joueur
+    player = this.physics.add.sprite(190, 398, 'fisherman');
 
-        //Ajout du joueur
-        player = this.physics.add.sprite(190, 398, 'fisherman');
+   
+    this.anims.create({
+        key: 'fish_1_move',
+        frames: this.anims.generateFrameNumbers('fish_1_anim', { start: 0, end: 1 }),
+        frameRate: 6,
+        repeat: -1
+        });
 
-       
-        this.anims.create({
-            key: 'fish_1_move',
-            frames: this.anims.generateFrameNumbers('fish_1_anim', { start: 0, end: 1 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    this.anims.create({
+        key: 'fish_2_move',
+        frames: this.anims.generateFrameNumbers('fish_2_anim', { start: 0, end: 1 }),
+        frameRate: 6,
+        repeat: -1
+        });
+
+    this.anims.create({
+        key: 'fish_3_move',
+        frames: this.anims.generateFrameNumbers('fish_3_anim', { start: 0, end: 1 }),
+        frameRate: 6,
+        repeat: -1
+        });
+
+    this.anims.create({
+        key: 'fish_4_move',
+        frames: this.anims.generateFrameNumbers('fish_4_anim', { start: 0, end: 1 }),
+        frameRate: 6,
+        repeat: -1
+        });
+
+    //Création de l'animation d'idle du joueur
+    this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers('player_idle', { start: 0, end: 3 }),
+        frameRate: 6,
+        repeat: -1
+        });
+
+    this.anims.create({
+        key: 'fishing',
+        frames: this.anims.generateFrameNumbers('player_fishing', { start: 0, end: 3 }),
+        frameRate: 6,
+        repeat: -1
+        });
+
+    //console.log("your code");
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+
+    //Décorations
+    var y = 590;
+    this.add.image(30, y, 'herb1');
     
-        this.anims.create({
-            key: 'fish_2_move',
-            frames: this.anims.generateFrameNumbers('fish_2_anim', { start: 0, end: 1 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    this.add.image(150, y, 'herb2');
+    this.add.image(175, y, 'herb3');
+    this.add.image(250, y, 'herb4');
+    this.add.image(300, y, 'herb2');
+    this.add.image(315, y, 'herb4');
+    this.add.image(340, y, 'herb3');
+    this.add.image(380, y, 'herb1');
+    this.add.image(420, y, 'herb4');
+    this.add.image(450, y, 'herb2');
+    this.add.image(490, y, 'herb1');
+    this.add.image(530, y, 'herb3');
+    this.add.image(560, y, 'herb4');
+    this.add.image(620, y, 'herb2');
+    this.add.image(660, y, 'herb1');
+    this.add.image(700, y, 'herb3');
+    this.add.image(760, y, 'herb3');
+    //Pillars
+    this.add.image(165,473, 'Pillar2');
+    this.add.image(192,473, 'Pillar2');
+    this.add.image(165,505, 'Pillar2');
+    this.add.image(192,505, 'Pillar2');
+    this.add.image(165,537, 'Pillar2');
+    this.add.image(192,537, 'Pillar2');
+    this.add.image(165,569, 'Pillar2');
+    this.add.image(192,569, 'Pillar2');
+    //
+    this.add.image(131,473, 'Pillar2');
+    this.add.image(102,473, 'Pillar2');
+    this.add.image(131,505, 'Pillar2');
+    this.add.image(102,505, 'Pillar2');
+    this.add.image(131,537, 'Pillar2');
+    this.add.image(102,537, 'Pillar2');
+    this.add.image(131,569, 'Pillar2');
+    this.add.image(102,569, 'Pillar2');
+    //
+    this.add.image(72,473, 'Pillar2');
+    this.add.image(72,505, 'Pillar2');
+    this.add.image(72,537, 'Pillar2');
+    this.add.image(72,569, 'Pillar2');
+    //
+    this.add.image(9,473, 'Pillar2');
+    this.add.image(9,505, 'Pillar2');
+    this.add.image(9,537, 'Pillar2');
+    this.add.image(9,569, 'Pillar2');
+    this.add.image(100, 590, 'herb1');
 
-        this.anims.create({
-            key: 'fish_3_move',
-            frames: this.anims.generateFrameNumbers('fish_3_anim', { start: 0, end: 1 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    key_A = this.input.keyboard.addKey('A');
+    key_Z = this.input.keyboard.addKey('Z');
+    key_E = this.input.keyboard.addKey('E');
+    key_R = this.input.keyboard.addKey('R');
+
+    fishingLines = this.physics.add.staticGroup();
     
-        this.anims.create({
-            key: 'fish_4_move',
-            frames: this.anims.generateFrameNumbers('fish_4_anim', { start: 0, end: 1 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    hook = this.physics.add.sprite(-200,-200, 'hook');
 
-        //Création de l'animation d'idle du joueur
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('player_idle', { start: 0, end: 3 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    //Groupe ou les poissons apparaitront
+    fishes = this.physics.add.group();
 
-        this.anims.create({
-            key: 'fishing',
-            frames: this.anims.generateFrameNumbers('player_fishing', { start: 0, end: 3 }),
-            frameRate: 6,
-            repeat: -1
-            });
+    //Fish 1 = 1.5
+    //Fish 2 = 0.8
+    //Fish 3 = 1.7
+    //Fish 4 = 1.2
+    // fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1').setScale(1.5);
+    // fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_2').setScale(0.8);
+    // fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_3').setScale(1.7);
+    // fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_4').setScale(1.2);
 
-        //console.log("your code");
-        this.cursorKeys = this.input.keyboard.createCursorKeys();
-
-        //Décorations
-        var y = 590;
-        this.add.image(30, y, 'herb1');
-        
-        this.add.image(150, y, 'herb2');
-        this.add.image(175, y, 'herb3');
-        this.add.image(250, y, 'herb4');
-        this.add.image(300, y, 'herb2');
-        this.add.image(315, y, 'herb4');
-        this.add.image(340, y, 'herb3');
-        this.add.image(380, y, 'herb1');
-        this.add.image(420, y, 'herb4');
-        this.add.image(450, y, 'herb2');
-        this.add.image(490, y, 'herb1');
-        this.add.image(530, y, 'herb3');
-        this.add.image(560, y, 'herb4');
-        this.add.image(620, y, 'herb2');
-        this.add.image(660, y, 'herb1');
-        this.add.image(700, y, 'herb3');
-        this.add.image(760, y, 'herb3');
-        //Pillars
-        this.add.image(165,473, 'Pillar2');
-        this.add.image(192,473, 'Pillar2');
-        this.add.image(165,505, 'Pillar2');
-        this.add.image(192,505, 'Pillar2');
-        this.add.image(165,537, 'Pillar2');
-        this.add.image(192,537, 'Pillar2');
-        this.add.image(165,569, 'Pillar2');
-        this.add.image(192,569, 'Pillar2');
-        //
-        this.add.image(131,473, 'Pillar2');
-        this.add.image(102,473, 'Pillar2');
-        this.add.image(131,505, 'Pillar2');
-        this.add.image(102,505, 'Pillar2');
-        this.add.image(131,537, 'Pillar2');
-        this.add.image(102,537, 'Pillar2');
-        this.add.image(131,569, 'Pillar2');
-        this.add.image(102,569, 'Pillar2');
-        //
-        this.add.image(72,473, 'Pillar2');
-        this.add.image(72,505, 'Pillar2');
-        this.add.image(72,537, 'Pillar2');
-        this.add.image(72,569, 'Pillar2');
-        //
-        this.add.image(9,473, 'Pillar2');
-        this.add.image(9,505, 'Pillar2');
-        this.add.image(9,537, 'Pillar2');
-        this.add.image(9,569, 'Pillar2');
-        this.add.image(100, 590, 'herb1');
-
-        key_A = this.input.keyboard.addKey('A');
-        key_Z = this.input.keyboard.addKey('Z');
-        key_E = this.input.keyboard.addKey('E');
-        key_R = this.input.keyboard.addKey('R');
-
-        fishingLines = this.physics.add.staticGroup();
-        
-        hook = this.physics.add.sprite(-200,-200, 'hook');
-
-        //Groupe ou les poissons apparaitront
-        fishes = this.physics.add.group();
-
-        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1');
-        fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_2');
-        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_3');
-        fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_4');
-
-       for (var i = 0; i < fishes.children.entries.length; i++) 
-        {
-            if(fishes.children.entries[i].y == fishSpawnPointY_a)
-                fishes.children.entries[i].name = "Paul"; 
-            if(fishes.children.entries[i].y == fishSpawnPointY_z)
-                fishes.children.entries[i].name = "Britney"; 
-            if(fishes.children.entries[i].y == fishSpawnPointY_e)
-                fishes.children.entries[i].name = "Marcus"; 
-            if(fishes.children.entries[i].y == fishSpawnPointY_r)
-                fishes.children.entries[i].name = "Kimberly"; 
-        }
-
-        this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);        
-
+   for (var i = 0; i < fishes.children.entries.length; i++) 
+    {
+        if(fishes.children.entries[i].y == fishSpawnPointY_a)
+            fishes.children.entries[i].name = "Paul"; 
+        if(fishes.children.entries[i].y == fishSpawnPointY_z)
+            fishes.children.entries[i].name = "Britney"; 
+        if(fishes.children.entries[i].y == fishSpawnPointY_e)
+            fishes.children.entries[i].name = "Marcus"; 
+        if(fishes.children.entries[i].y == fishSpawnPointY_r)
+            fishes.children.entries[i].name = "Kimberly"; 
     }
 
-    function HandleAnimation(fish)
+    this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);  
+
+    TheWhiteStripes_SevenNationArmy(this); 
+
+    //mainMusic = this.sound.add("Song1"); 
+    //mainMusic.play();  
+
+    console.log();
+
+}
+ var mainMusic;
+
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              UPDATE
+//===========================================================================================================//
+//===========================================================================================================//
+
+function update ()
+{
+
+    //Gère les déplacements et les animations des poissons
+    for (var i = 0; i < fishes.children.entries.length; i++) 
     {
-        if(fish.name == "Paul")
-            fish.anims.play('fish_1_move', true);
-        if(fish.name == "Marcus")
-            fish.anims.play('fish_2_move', true);
-        if(fish.name == "Britney")
-            fish.anims.play('fish_3_move', true);
-        if(fish.name == "Kimberly")
-            fish.anims.play('fish_4_move', true);
+        MoveFish(fishes.children.entries[i], -3.34);
+        HandleAnimation(fishes.children.entries[i]);
     }
 
-
-    // var decreaseText;
-    // function TestFunc() {
-    //     console.log(testf.x);
-    // }
-
-    function update ()
+    //Animations du joueur
+    if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)
     {
-        //1s 0 0.835= 50 unit
-        //1s à 1.67 = 100 unit
-        //1s à 3.34 = 200 unit
-        //testf.x += 0.835;
+        player.anims.play('fishing', true);
+    }
+    else
+    {
+        player.anims.play('idle', true);
+    }
 
-        //if(testf.x >= 500 && a)
-        //{
-            //console.log(testf.x);
-            //decreaseText = this.time.addEvent({ delay: 1000, callback: TestFunc, callbackScope: this, repeat: 0});
-            //a = false;
-        //}
+    //Key -> A
+    if(Phaser.Input.Keyboard.JustDown(key_A))
+        Key_A_isPressed = true;
+    if(Phaser.Input.Keyboard.JustUp(key_A))
+        Key_A_isPressed = false;
 
+    //Key -> Z
+    if(Phaser.Input.Keyboard.JustDown(key_Z))
+        Key_Z_isPressed = true;
+    if(Phaser.Input.Keyboard.JustUp(key_Z))
+        Key_Z_isPressed = false;
 
-        for (var i = 0; i < fishes.children.entries.length; i++) 
-        {
-            MoveFish(fishes.children.entries[i], -3);
-            HandleAnimation(fishes.children.entries[i]);
-        }
+    //Key -> E
+    if(Phaser.Input.Keyboard.JustDown(key_E))
+        Key_E_isPressed = true;
+    if(Phaser.Input.Keyboard.JustUp(key_E))
+        Key_E_isPressed = false;
 
-        //Animations du joueur
-        if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)
-        {
-            player.anims.play('fishing', true);
-        }
-        else
-        {
-            player.anims.play('idle', true);
-        }
-
-        //Key -> A
-        if(Phaser.Input.Keyboard.JustDown(key_A))
-            Key_A_isPressed = true;
-        if(Phaser.Input.Keyboard.JustUp(key_A))
-            Key_A_isPressed = false;
-
-        //Key -> Z
-        if(Phaser.Input.Keyboard.JustDown(key_Z))
-            Key_Z_isPressed = true;
-        if(Phaser.Input.Keyboard.JustUp(key_Z))
-            Key_Z_isPressed = false;
-
-        //Key -> E
-        if(Phaser.Input.Keyboard.JustDown(key_E))
-            Key_E_isPressed = true;
-        if(Phaser.Input.Keyboard.JustUp(key_E))
-            Key_E_isPressed = false;
-
-        //Key -> R
-        if(Phaser.Input.Keyboard.JustDown(key_R))
-            Key_R_isPressed = true;
-        if(Phaser.Input.Keyboard.JustUp(key_R))
-            Key_R_isPressed = false;
+    //Key -> R
+    if(Phaser.Input.Keyboard.JustDown(key_R))
+        Key_R_isPressed = true;
+    if(Phaser.Input.Keyboard.JustUp(key_R))
+        Key_R_isPressed = false;
 
 //===========================================================================//
-        if(Key_A_isPressed && once_a == true)
-        {
-            fishingLines.create(209, 495, 'line_a');
-            SpawnHook(209, 460);
-            once_a = false;
-        }
-        if(!Key_A_isPressed && once_a == false)
-        {
-            fishingLines.children.entries[0].destroy();
-            CheckIfHasFish();
-            DispawnHook();
-            once_a = true;
-        }
-        //---------------------------------------------------
-        if(Key_Z_isPressed && once_z == true)
-        {
-            fishingLines.create(209, 495, 'line_z');
-            SpawnHook(209, 490);
-            once_z = false;
-        }
-        if(!Key_Z_isPressed && once_z == false)
-        {
-            fishingLines.children.entries[0].destroy();
-            CheckIfHasFish();
-            DispawnHook();
-            once_z = true;
-        }
-        //---------------------------------------------------
-        if(Key_E_isPressed && once_e == true)
-        {
-            fishingLines.create(209, 495, 'line_e');
-            SpawnHook(209, 520);
-            once_e = false;
-        }
-        if(!Key_E_isPressed && once_e == false)
-        {
-            fishingLines.children.entries[0].destroy();
-            CheckIfHasFish();
-            DispawnHook();
-            once_e = true;
-        }
-        //---------------------------------------------------
-        if(Key_R_isPressed && once_r == true)
-        {
-            fishingLines.create(209, 495, 'line_r');
-            SpawnHook(209, 555);
-            once_r = false;
-        }
-        if(!Key_R_isPressed && once_r == false)
-        {
-            fishingLines.children.entries[0].destroy();
-            CheckIfHasFish();
-            DispawnHook();
-            once_r = true;
-        }
-
-        isFishInHook = this.physics.overlap(hook, fish);
+    if(Key_A_isPressed && once_a == true)
+    {
+        fishingLines.create(209, 495, 'line_a');
+        SpawnHook(209, 460);
+        once_a = false;
     }
+    if(!Key_A_isPressed && once_a == false)
+    {
+        fishingLines.children.entries[0].destroy();
+        CheckIfHasFish();
+        DispawnHook();
+        once_a = true;
+    }
+    //---------------------------------------------------
+    if(Key_Z_isPressed && once_z == true)
+    {
+        fishingLines.create(209, 495, 'line_z');
+        SpawnHook(209, 490);
+        once_z = false;
+    }
+    if(!Key_Z_isPressed && once_z == false)
+    {
+        fishingLines.children.entries[0].destroy();
+        CheckIfHasFish();
+        DispawnHook();
+        once_z = true;
+    }
+    //---------------------------------------------------
+    if(Key_E_isPressed && once_e == true)
+    {
+        fishingLines.create(209, 495, 'line_e');
+        SpawnHook(209, 520);
+        once_e = false;
+    }
+    if(!Key_E_isPressed && once_e == false)
+    {
+        fishingLines.children.entries[0].destroy();
+        CheckIfHasFish();
+        DispawnHook();
+        once_e = true;
+    }
+    //---------------------------------------------------
+    if(Key_R_isPressed && once_r == true)
+    {
+        fishingLines.create(209, 495, 'line_r');
+        SpawnHook(209, 555);
+        once_r = false;
+    }
+    if(!Key_R_isPressed && once_r == false)
+    {
+        fishingLines.children.entries[0].destroy();
+        CheckIfHasFish();
+        DispawnHook();
+        once_r = true;
+    }
+
+    //Bool qui gère si un poisson est dans le crochet
+    isFishInHook = this.physics.overlap(hook, fish);
+}
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              METHODES
+//===========================================================================================================//
+//===========================================================================================================//
+function HandleAnimation(fish)
+{
+    if(fish.name == "Paul")
+        fish.anims.play('fish_1_move', true);
+    if(fish.name == "Marcus")
+        fish.anims.play('fish_2_move', true);
+    if(fish.name == "Britney")
+        fish.anims.play('fish_3_move', true);
+    if(fish.name == "Kimberly")
+        fish.anims.play('fish_4_move', true);
+}
 
 var currentFish;
 
@@ -414,3 +440,60 @@ function MoveFish(fish, speed)
     }
 }
 
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              MUSIQUE 1 (TheWhiteStripes_SevenNationArmy)
+//===========================================================================================================//
+//===========================================================================================================//
+function TheWhiteStripes_SevenNationArmy(game)
+{
+    //1s 0 0.835= 50 unit
+    //1s à 1.67 = 100 unit
+    //1s à 3.34 = 200 unit
+    //Nom des poissons : Paul, Britney, Marcus, Kimberly
+    //Phaser.Math.Between(1,4);
+    
+    //Game, delay, position X, position Y, type de poisson
+    CreateStep(game, 1000, fishSpawnPointX, fishSpawnPointY_a, 1);
+
+    let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
+    
+
+    console.log(b);
+    
+    for (var i = 0; i < 20; i++) 
+    {
+        var a = Phaser.Math.Between(0, 3);
+        var b = rand[a];
+        CreateStep(game, i * 1000, fishSpawnPointX, b, Phaser.Math.Between(1,4));
+    }
+  
+    
+ 
+}
+
+function CreateFish(x, y, type)
+{
+    var name;
+    var scale;
+
+    if(type == 1) {name = 'fish_1'; scale = 1.5;}
+    if(type == 2) {name = 'fish_2'; scale = 1.6;}
+    if(type == 3) {name = 'fish_3'; scale = 1.0;}
+    if(type == 4) {name = 'fish_4'; scale = 1.2;}
+
+    fishes.create(x, y, name).setScale(scale);
+
+    if(type == 1) {fishes.children.entries[fishes.children.entries.length-1].name = "Paul";}
+    if(type == 2) {fishes.children.entries[fishes.children.entries.length-1].name = "Marcus";}
+    if(type == 3) {fishes.children.entries[fishes.children.entries.length-1].name = "Britney";}
+    if(type == 4) {fishes.children.entries[fishes.children.entries.length-1].name = "Kimberly";}
+
+    
+
+}
+
+function CreateStep(game, delay, x, y, type)
+{
+    game.time.addEvent({ delay: delay, callback: CreateFish, args:[x, y, type], callbackScope: this});
+}
