@@ -71,14 +71,16 @@ var config = {
         this.load.image('Background', 'assets/Autres/background.png');
         this.load.image('Water', 'assets/Objects/Water_Simple.png');
         this.load.image('Water2', 'assets/Objects/Water_Simple_3.png');
-        this.load.image('fish_1', 'assets/Objects/Catch/3.png');
-        this.load.image('fish_2', 'assets/Objects/Catch/1.png');
         this.load.image('herb1', 'assets/Objects/Grass1.png');
         this.load.image('herb2', 'assets/Objects/Grass2.png');
         this.load.image('herb3', 'assets/Objects/Grass3.png');
         this.load.image('herb4', 'assets/Objects/Grass4.png');
         this.load.image('Pillar1', 'assets/Objects/Pillar_1.png');
         this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
+
+        //Poissons
+        this.load.image('fish_1', 'assets/Objects/Catch/3_solo_1.png');
+        this.load.image('fish_6', 'assets/Objects/Catch/6_solo.png');
 
         //Lignes de pêche
         this.load.image('line_a', 'assets/Objects/line_a.png');
@@ -90,7 +92,8 @@ var config = {
         //Chargement des animations
         this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('player_fishing', 'assets/Fisherman/Fisherman_fish.png', { frameWidth: 48, frameHeight: 48 });
-
+        this.load.spritesheet('fish_1_anim', 'assets/Objects/Catch/3_solo.png', { frameWidth: 20, frameHeight: 12 });
+        this.load.spritesheet('fish_6_anim', 'assets/Objects/Catch/6_anim.png', { frameWidth: 54, frameHeight: 22 });
         
     }
 
@@ -111,6 +114,19 @@ var config = {
 
         //Ajout du joueur
         player = this.physics.add.sprite(190, 398, 'fisherman');
+
+        this.anims.create({
+            key: 'fish_1_move',
+            frames: this.anims.generateFrameNumbers('fish_1_anim', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+            });
+        this.anims.create({
+            key: 'fish_6_move',
+            frames: this.anims.generateFrameNumbers('fish_6_anim', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+            });
 
         //Création de l'animation d'idle du joueur
         this.anims.create({
@@ -189,31 +205,77 @@ var config = {
         fishingLines = this.physics.add.staticGroup();
         
         hook = this.physics.add.sprite(-200,-200, 'hook');
+
+        //Groupe ou les poissons apparaitront
         fishes = this.physics.add.group();
 
-        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1');
-        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_1');
+        fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1').setScale(1.5);
+        fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_1').setScale(1.5);
+        fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_6').setScale(0.8);
+        fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_1').setScale(1.5);
 
-        fishes.children.entries[0].name= "Paul";
-        fishes.children.entries[1].name= "Marcus";
+        
+        fishes.children.entries[2].name= "Marcus";
+
+        console.log(fishes.children.entries[0]);
+
+       for (var i = 0; i < fishes.children.entries.length; i++) 
+        {
+            if(fishes.children.entries[i].y == fishSpawnPointY_a)
+                fishes.children.entries[y].name= "Paul"; 
+            if(fishes.children.entries[i].y == fishSpawnPointY_z)
+                fishes.children.entries[y].name= "Britney"; 
+            if(fishes.children.entries[i].y == fishSpawnPointY_e)
+                fishes.children.entries[y].name= "Marcus"; 
+            if(fishes.children.entries[i].y == fishSpawnPointY_r)
+                fishes.children.entries[y].name= "Kimberly"; 
+        }
 
         this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);
         //console.log(fishes.children.entries.length);
 
+
+        
+
     }
 
- 
+    function HandleAnimation(fish)
+    {
+        if(fish.name == "Paul")
+            fish.anims.play('fish_1_move', true);
+        if(fish.name == "Marcus")
+            fish.anims.play('fish_6_move', true);
+    }
 
+
+    // var decreaseText;
+    // function TestFunc() {
+    //     console.log(testf.x);
+    // }
 
     function update ()
     {
+        //1s 0 0.835= 50 unit
+        //1s à 1.67 = 100 unit
+        //1s à 3.34 = 200 unit
+        //testf.x += 0.835;
+
+        //if(testf.x >= 500 && a)
+        //{
+            //console.log(testf.x);
+            //decreaseText = this.time.addEvent({ delay: 1000, callback: TestFunc, callbackScope: this, repeat: 0});
+            //a = false;
+        //}
+
 
         for (var i = 0; i < fishes.children.entries.length; i++) 
         {
             MoveFish(fishes.children.entries[i], -3);
+            //fishes.children.entries[i].anims.play('fish_1_move', true);
+            HandleAnimation(fishes.children.entries[i]);
         }
 
-
+        
 
         //Animations du joueur
         if(Key_A_isPressed || Key_E_isPressed || Key_R_isPressed || Key_Z_isPressed)

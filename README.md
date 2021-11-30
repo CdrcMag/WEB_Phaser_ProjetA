@@ -28,7 +28,8 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 - Ajout du crochet 
 - Collisions entre le crochet et les poissons
 - Système d'apparition des poissons 
-
+- Nommage des poissons pour différentiation (Paul, Britney, Kimberly et Marcus)
+- Ajout des animations pour les 4 types de poissons
 
 
 
