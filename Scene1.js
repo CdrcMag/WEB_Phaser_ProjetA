@@ -436,7 +436,8 @@ function MoveFish(fish, speed)
     fish.x += speed;
     if(fish.x < -5)
     {
-        fish.x = 850;
+        //fish.x = 850;
+        fish.disableBody(true, true);
     }
 }
 
@@ -451,25 +452,18 @@ function TheWhiteStripes_SevenNationArmy(game)
     //1s à 1.67 = 100 unit
     //1s à 3.34 = 200 unit
     //Nom des poissons : Paul, Britney, Marcus, Kimberly
-    //Phaser.Math.Between(1,4);
-    
-    //Game, delay, position X, position Y, type de poisson
-    CreateStep(game, 1000, fishSpawnPointX, fishSpawnPointY_a, 1);
+
+    //CreateStep(game, 1000, fishSpawnPointX, fishSpawnPointY_a, 1);
 
     let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
     
-
-    console.log(b);
-    
-    for (var i = 0; i < 20; i++) 
+    for (var i = 0; i < 30; i++) 
     {
         var a = Phaser.Math.Between(0, 3);
         var b = rand[a];
         CreateStep(game, i * 1000, fishSpawnPointX, b, Phaser.Math.Between(1,4));
     }
   
-    
- 
 }
 
 function CreateFish(x, y, type)
@@ -493,7 +487,9 @@ function CreateFish(x, y, type)
 
 }
 
+
 function CreateStep(game, delay, x, y, type)
 {
+    //Game, delay, position X, position Y, type de poisson
     game.time.addEvent({ delay: delay, callback: CreateFish, args:[x, y, type], callbackScope: this});
 }

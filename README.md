@@ -30,7 +30,9 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 - Système d'apparition des poissons 
 - Nommage des poissons pour différentiation (Paul, Britney, Kimberly et Marcus)
 - Ajout des animations pour les 4 types de poissons
+- Démo du jeu avec apparition aléatoire des poissons
 
+<img src="Captures/phaserfish.gif", width = "800">
 
 
 ### Au 11/12/21
