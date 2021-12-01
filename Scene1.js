@@ -47,11 +47,8 @@ var config = {
     var isFishInHook = false;
 
     var fishingLines;
-    var fish;
-    var f;
     var fishes;
-    var f2;
-    var f3;
+
 
     //Inputs
     var key_A;
@@ -69,6 +66,8 @@ var config = {
     var Key_Z_isPressed = false;
     var Key_E_isPressed = false;
     var Key_R_isPressed = false;
+
+    var btn_jouer;
 
 //===========================================================================================================//
 //===========================================================================================================//
@@ -89,6 +88,7 @@ function preload ()
     this.load.image('herb4', 'assets/Objects/Grass4.png');
     this.load.image('Pillar1', 'assets/Objects/Pillar_1.png');
     this.load.image('Pillar2', 'assets/Objects/Pillar_2.png');
+    this.load.image('clouds', 'assets/Objects/clouds.png');
 
     //Poissons
     this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');
@@ -103,6 +103,10 @@ function preload ()
     this.load.image('line_r', 'assets/Objects/line_r.png');
     this.load.image('hook', 'assets/Objects/hook.png');
 
+    //UI
+    this.load.image('btn_jouer', 'assets/UI/jouer.png');
+    this.load.image('btn_jouer_hover', 'assets/UI/jouer_hover.png');
+
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
     this.load.spritesheet('player_fishing', 'assets/Fisherman/Fisherman_fish.png', { frameWidth: 48, frameHeight: 48 });
@@ -112,7 +116,7 @@ function preload ()
     this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
     this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
     //
-    this.load.audio('Song1', 'assets/TheWhiteStripes_SevenNationArmy.mp3');
+    //this.load.audio('Song1', 'assets/SONG_ONE.mp3');
 }
 
 //===========================================================================================================//
@@ -234,6 +238,29 @@ function create ()
     this.add.image(9,537, 'Pillar2');
     this.add.image(9,569, 'Pillar2');
     this.add.image(100, 590, 'herb1');
+    //
+    this.add.image(400,300, 'clouds').setAlpha(0.3);
+
+
+    //===================================================================================================
+    //UI
+    btn_jouer = this.add.sprite(400,300, 'btn_jouer').setInteractive();
+    btn_jouer.setTint(0xFFE95E);
+
+    btn_jouer.on('pointerover', function(pointer)
+    {
+        btn_jouer.setTint(0xFFBD54);
+    })
+    btn_jouer.on('pointerout',function(pointer)
+    {
+        btn_jouer.setTint(0xFFE95E);
+    })
+    btn_jouer.on('pointerdown',function(pointer)
+    {
+        console.log("lancer jeu");
+        
+    })
+    //===================================================================================================
 
     key_A = this.input.keyboard.addKey('A');
     key_Z = this.input.keyboard.addKey('Z');
@@ -247,35 +274,13 @@ function create ()
     //Groupe ou les poissons apparaitront
     fishes = this.physics.add.group();
 
-    //Fish 1 = 1.5
-    //Fish 2 = 0.8
-    //Fish 3 = 1.7
-    //Fish 4 = 1.2
-    // fishes.create(fishSpawnPointX, fishSpawnPointY_a, 'fish_1').setScale(1.5);
-    // fishes.create(fishSpawnPointX, fishSpawnPointY_z, 'fish_2').setScale(0.8);
-    // fishes.create(fishSpawnPointX, fishSpawnPointY_e, 'fish_3').setScale(1.7);
-    // fishes.create(fishSpawnPointX, fishSpawnPointY_r, 'fish_4').setScale(1.2);
-
-   for (var i = 0; i < fishes.children.entries.length; i++) 
-    {
-        if(fishes.children.entries[i].y == fishSpawnPointY_a)
-            fishes.children.entries[i].name = "Paul"; 
-        if(fishes.children.entries[i].y == fishSpawnPointY_z)
-            fishes.children.entries[i].name = "Britney"; 
-        if(fishes.children.entries[i].y == fishSpawnPointY_e)
-            fishes.children.entries[i].name = "Marcus"; 
-        if(fishes.children.entries[i].y == fishSpawnPointY_r)
-            fishes.children.entries[i].name = "Kimberly"; 
-    }
-
     this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);  
 
-    TheWhiteStripes_SevenNationArmy(this); 
+    SONG_ONE(this); 
 
     //mainMusic = this.sound.add("Song1"); 
     //mainMusic.play();  
 
-    console.log();
 
 }
  var mainMusic;
@@ -288,6 +293,10 @@ function create ()
 
 function update ()
 {
+    //Bool qui gère si un poisson est dans le crochet
+    isFishInHook = this.physics.overlap(hook, fishes);
+    //console.log(isFishInHook);
+    //currentFish = null;
 
     //Gère les déplacements et les animations des poissons
     for (var i = 0; i < fishes.children.entries.length; i++) 
@@ -387,8 +396,7 @@ function update ()
         once_r = true;
     }
 
-    //Bool qui gère si un poisson est dans le crochet
-    isFishInHook = this.physics.overlap(hook, fish);
+        
 }
 //===========================================================================================================//
 //===========================================================================================================//
@@ -416,8 +424,14 @@ function FishIsInHook(hook, fish)
 
 function CheckIfHasFish()
 {
-    if(currentFish)
+    if(currentFish && isFishInHook)
+    {
+        //Désactive le poisson
         currentFish.disableBody(true, true);
+
+        //Gère le score
+        addScore(100);
+    }
 }
     
 function SpawnHook(x, y)
@@ -443,10 +457,10 @@ function MoveFish(fish, speed)
 
 //===========================================================================================================//
 //===========================================================================================================//
-//                                              MUSIQUE 1 (TheWhiteStripes_SevenNationArmy)
+//                                              MUSIQUE 1 (SONG_ONE)
 //===========================================================================================================//
 //===========================================================================================================//
-function TheWhiteStripes_SevenNationArmy(game)
+function SONG_ONE(game)
 {
     //1s 0 0.835= 50 unit
     //1s à 1.67 = 100 unit
@@ -466,7 +480,7 @@ function TheWhiteStripes_SevenNationArmy(game)
   
 }
 
-function CreateFish(x, y, type)
+function CreateFish(x, y, type, game)
 {
     var name;
     var scale;
@@ -483,13 +497,42 @@ function CreateFish(x, y, type)
     if(type == 3) {fishes.children.entries[fishes.children.entries.length-1].name = "Britney";}
     if(type == 4) {fishes.children.entries[fishes.children.entries.length-1].name = "Kimberly";}
 
+    //game.physics.add.overlap(hook, fishes.children.entries.length, FishIsInHook, null, this);  
+    
     
 
 }
 
-
 function CreateStep(game, delay, x, y, type)
 {
     //Game, delay, position X, position Y, type de poisson
-    game.time.addEvent({ delay: delay, callback: CreateFish, args:[x, y, type], callbackScope: this});
+    game.time.addEvent({ delay: delay, callback: CreateFish, args:[x, y, type, game], callbackScope: this});
 }
+
+//===========================================================================================================//
+//===========================================================================================================//
+//                                              SCORE
+//===========================================================================================================//
+//===========================================================================================================//
+var currentScore = 0;
+
+function addScore(scoreToAdd)
+{
+    currentScore += scoreToAdd;
+    console.log("Score : " + currentScore);
+}
+
+/*
+TO-DO : 
+- Menu principal : bouton jouer (lance une partie et la musique)
+- Mettre la musique dans le jeu et faire les notes en tempo avec les poissons
+- Afficher le score, développer les multiplicateurs
+- Meilleur score persistant
+- Détecter quand le joueur rate un poisson
+- Polish général 
+    - Ajout de bulles
+    - Ajout de nuages : V
+
+- Fix le fait de choper un poisson depuis une autre ligne
+
+*/

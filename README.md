@@ -31,6 +31,11 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 - Nommage des poissons pour différentiation (Paul, Britney, Kimberly et Marcus)
 - Ajout des animations pour les 4 types de poissons
 - Démo du jeu avec apparition aléatoire des poissons
+- Ajout de décorations
+- Fix de divers bugs dans le core gameplay
+- Ajout du score
+- Mise à jour globale du code
+- 
 
 <img src="Captures/phaserfish.gif" width = "800">
 
