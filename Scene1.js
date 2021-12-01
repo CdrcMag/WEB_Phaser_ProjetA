@@ -69,6 +69,7 @@ var config = {
 
     var btn_jouer;
 
+    var LaunchGame = false;
 //===========================================================================================================//
 //===========================================================================================================//
 //                                              PRELOAD
@@ -257,7 +258,9 @@ function create ()
     })
     btn_jouer.on('pointerdown',function(pointer)
     {
-        console.log("lancer jeu");
+        console.log("Lancement du jeu");
+        LaunchGame = true;
+        
         
     })
     //===================================================================================================
@@ -276,7 +279,7 @@ function create ()
 
     this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);  
 
-    SONG_ONE(this); 
+    //SONG_ONE(this); 
 
     //mainMusic = this.sound.add("Song1"); 
     //mainMusic.play();  
@@ -293,6 +296,14 @@ function create ()
 
 function update ()
 {
+    //Boucle de lancement de jeu lors de l'input sur le bouton "jouer"
+    if(LaunchGame)
+    {
+        SONG_ONE(this);
+        LaunchGame = false;
+    }
+
+
     //Bool qui gère si un poisson est dans le crochet
     isFishInHook = this.physics.overlap(hook, fishes);
     //console.log(isFishInHook);
@@ -462,12 +473,14 @@ function MoveFish(fish, speed)
 //===========================================================================================================//
 function SONG_ONE(game)
 {
+
+    //Désactive le bouton "jouer"
+    btn_jouer.destroy();
+
     //1s 0 0.835= 50 unit
     //1s à 1.67 = 100 unit
     //1s à 3.34 = 200 unit
     //Nom des poissons : Paul, Britney, Marcus, Kimberly
-
-    //CreateStep(game, 1000, fishSpawnPointX, fishSpawnPointY_a, 1);
 
     let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
     
