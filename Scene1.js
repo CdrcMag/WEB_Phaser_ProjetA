@@ -127,6 +127,8 @@ function preload ()
 //===========================================================================================================//
 function create ()
 {
+    
+
     //Création de l'arrière plan
     this.add.image(400, 300, 'Background');
 
@@ -284,9 +286,14 @@ function create ()
     //mainMusic = this.sound.add("Song1"); 
     //mainMusic.play();  
 
+    multiplierText = this.add.text(200,400);
+    multiplierText.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000);
 
+    multiplierText.setText('TEXTE DE TEST');
 }
- var mainMusic;
+
+var mainMusic;
+var multiplierText;
 
 //===========================================================================================================//
 //===========================================================================================================//
@@ -407,7 +414,9 @@ function update ()
         once_r = true;
     }
 
-        
+    //Mise à jour des textes
+    //multiplierText.setText("Score : " + currentScore);
+    multiplierText.setText(currentMultiplier);
 }
 //===========================================================================================================//
 //===========================================================================================================//
@@ -439,6 +448,8 @@ function CheckIfHasFish()
     {
         //Désactive le poisson
         currentFish.disableBody(true, true);
+        currentFish.y = -10;
+        nbrOfFishCaughtInaRow += 1;
 
         //Gère le score
         addScore(100);
@@ -459,9 +470,15 @@ function DispawnHook()
 function MoveFish(fish, speed)
 {
     fish.x += speed;
+    if(fish.x < 100 && fish.y > 0)
+    {
+        currentMultiplier = 1;
+        nbrOfFishCaughtInaRow = 0;
+        
+    }
     if(fish.x < -5)
     {
-        //fish.x = 850;
+        fish.y = -10;
         fish.disableBody(true, true);
     }
 }
@@ -484,7 +501,7 @@ function SONG_ONE(game)
 
     let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
     
-    for (var i = 0; i < 30; i++) 
+    for (var i = 0; i < 20; i++) 
     {
         var a = Phaser.Math.Between(0, 3);
         var b = rand[a];
@@ -528,20 +545,31 @@ function CreateStep(game, delay, x, y, type)
 //===========================================================================================================//
 //===========================================================================================================//
 var currentScore = 0;
+var currentMultiplier = 1;
+var nbrOfFishCaughtInaRow = 0;
+var nbrOfFishCaughtInTotal = 0;
 
 function addScore(scoreToAdd)
 {
-    currentScore += scoreToAdd;
-    console.log("Score : " + currentScore);
+    if(nbrOfFishCaughtInaRow >= 10 && nbrOfFishCaughtInaRow < 20) currentMultiplier = 2;
+    if(nbrOfFishCaughtInaRow >= 20 && nbrOfFishCaughtInaRow < 30) currentMultiplier = 3;
+    if(nbrOfFishCaughtInaRow >= 30) currentMultiplier = 5;
+
+    currentScore += scoreToAdd * currentMultiplier;
+    nbrOfFishCaughtInTotal += 1;
+    //console.log("Score : " + currentScore + " / " + "Row : " + nbrOfFishCaughtInaRow + " / m : " + currentMultiplier);
+    //console.log(nbrOfFishCaughtInaRow);
+    
 }
 
 /*
 TO-DO : 
 - Menu principal : bouton jouer (lance une partie et la musique)
 - Mettre la musique dans le jeu et faire les notes en tempo avec les poissons
-- Afficher le score, développer les multiplicateurs
+- Afficher le score, développer les multiplicateurs : V
 - Meilleur score persistant
-- Détecter quand le joueur rate un poisson
+- Détecter quand le joueur rate un poisson : V
+- Ajout titre
 - Polish général 
     - Ajout de bulles
     - Ajout de nuages : V
