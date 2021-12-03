@@ -35,9 +35,12 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 - Fix de divers bugs dans le core gameplay
 - Ajout du score
 - Mise à jour globale du code
-- 
 
 <img src="Captures/phaserfish.gif" width = "800">
 
+- Ajout du menu principal et capacité à lancer une partie
+- Developpement du score, multiplicateurs, tracking de stats (nombre de poissons touchés, nombre ratés, etc..)
+
+<img src="Captures/screenshot_1.PNG" width="400">
 
 ### Au 11/12/21

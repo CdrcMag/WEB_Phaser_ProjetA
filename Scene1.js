@@ -107,6 +107,7 @@ function preload ()
     //UI
     this.load.image('btn_jouer', 'assets/UI/jouer.png');
     this.load.image('btn_jouer_hover', 'assets/UI/jouer_hover.png');
+    this.load.image('titre', 'assets/UI/titre.png');
 
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -243,20 +244,21 @@ function create ()
     this.add.image(100, 590, 'herb1');
     //
     this.add.image(400,300, 'clouds').setAlpha(0.3);
+    this.add.image(400,300, 'titre').setScale(0.9);
 
 
     //===================================================================================================
     //UI
     btn_jouer = this.add.sprite(400,300, 'btn_jouer').setInteractive();
-    btn_jouer.setTint(0xFFE95E);
+    btn_jouer.setTint(0xFF878F);
 
     btn_jouer.on('pointerover', function(pointer)
     {
-        btn_jouer.setTint(0xFFBD54);
+        btn_jouer.setTint(0xFF6D77);
     })
     btn_jouer.on('pointerout',function(pointer)
     {
-        btn_jouer.setTint(0xFFE95E);
+        btn_jouer.setTint(0xFF878F);
     })
     btn_jouer.on('pointerdown',function(pointer)
     {
@@ -289,7 +291,7 @@ function create ()
     multiplierText = this.add.text(200,400);
     multiplierText.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000);
 
-    multiplierText.setText('TEXTE DE TEST');
+    //multiplierText.setText('TEXTE DE TEST');
 }
 
 var mainMusic;
@@ -416,7 +418,7 @@ function update ()
 
     //Mise à jour des textes
     //multiplierText.setText("Score : " + currentScore);
-    multiplierText.setText(currentMultiplier);
+    //multiplierText.setText(currentMultiplier);
 }
 //===========================================================================================================//
 //===========================================================================================================//
