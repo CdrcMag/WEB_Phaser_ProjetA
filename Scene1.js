@@ -70,6 +70,9 @@ var config = {
     var btn_jouer;
 
     var LaunchGame = false;
+
+    var mainMusic;
+    var hitSound;
 //===========================================================================================================//
 //===========================================================================================================//
 //                                              PRELOAD
@@ -121,7 +124,8 @@ function preload ()
     this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
     this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
     //
-    this.load.audio('Song1', 'assets/Kmaro-FemmeLikeU.mp3');
+    this.load.audio('Song1', 'assets/passenger.mp3');
+    this.load.audio('hit', 'assets/Audio/hit.mp3');
 }
 
 //===========================================================================================================//
@@ -131,7 +135,8 @@ function preload ()
 //===========================================================================================================//
 function create ()
 {
-    
+    mainMusic = this.sound.add("Song1", {volume: 0.5});
+    hitSound = this.sound.add("hit", {volume: 0.05});
 
     //Création de l'arrière plan
     this.add.image(400, 300, 'Background');
@@ -291,11 +296,6 @@ function create ()
 
     this.physics.add.overlap(hook, fishes, FishIsInHook, null, this);  
 
-    //SONG_ONE(this); 
-
-    //mainMusic = this.sound.add("Song1"); 
-    //mainMusic.play();  
-
     scoreText = this.add.text(270,355);
     scoreText.setTint(0x642E11);
 
@@ -305,14 +305,9 @@ function create ()
     inARowText = this.add.text(270,355 + ecart * 2);
     inARowText.setTint(0x642E11);
 
-    // scoreText.setText('SCORE');
-    // multiplierText.setText('MULTI');
-    // inARowText.setText('ROW');
-
     UpdatePanel(0, 1, 0);
 }
 
-var mainMusic;
 var multiplierText;
 var scoreText;
 var inARowText;
@@ -387,11 +382,12 @@ function update ()
         fishingLines.create(209, 495, 'line_a');
         SpawnHook(209, 460);
         once_a = false;
+        console.log(this.time.now);
     }
     if(!Key_A_isPressed && once_a == false)
     {
         fishingLines.children.entries[0].destroy();
-        CheckIfHasFish();
+        CheckIfHasFish(this);
         DispawnHook();
         once_a = true;
     }
@@ -405,7 +401,7 @@ function update ()
     if(!Key_Z_isPressed && once_z == false)
     {
         fishingLines.children.entries[0].destroy();
-        CheckIfHasFish();
+        CheckIfHasFish(this);
         DispawnHook();
         once_z = true;
     }
@@ -419,7 +415,7 @@ function update ()
     if(!Key_E_isPressed && once_e == false)
     {
         fishingLines.children.entries[0].destroy();
-        CheckIfHasFish();
+        CheckIfHasFish(this);
         DispawnHook();
         once_e = true;
     }
@@ -433,7 +429,7 @@ function update ()
     if(!Key_R_isPressed && once_r == false)
     {
         fishingLines.children.entries[0].destroy();
-        CheckIfHasFish();
+        CheckIfHasFish(this);
         DispawnHook();
         once_r = true;
     }
@@ -469,7 +465,7 @@ function FishIsInHook(hook, fish)
     currentFish = fish;
 }
 
-function CheckIfHasFish()
+function CheckIfHasFish(game)
 {
     if(currentFish && isFishInHook)
     {
@@ -477,7 +473,8 @@ function CheckIfHasFish()
         currentFish.disableBody(true, true);
         currentFish.y = -10;
         nbrOfFishCaughtInaRow += 1;
-
+        hitSound.play();
+        game.cameras.main.shake(50, 0.004); // Camera Shake (duration, power)
         //Gère le score
         addScore(100);
 
@@ -517,11 +514,19 @@ function MoveFish(fish, speed)
 //                                              MUSIQUE 1 (SONG_ONE)
 //===========================================================================================================//
 //===========================================================================================================//
+function PlaySong()
+{
+    mainMusic.play();
+}
 function SONG_ONE(game)
 {
 
     //Désactive le bouton "jouer"
     btn_jouer.destroy();
+
+    //Lance la musique
+    
+    game.time.addEvent({ delay: 2400, callback: PlaySong, callbackScope: this});
 
     //1s 0 0.835= 50 unit
     //1s à 1.67 = 100 unit
@@ -536,6 +541,7 @@ function SONG_ONE(game)
         var b = rand[a];
         CreateStep(game, i * 1000, fishSpawnPointX, b, Phaser.Math.Between(1,4));
     }
+
   
 }
 
