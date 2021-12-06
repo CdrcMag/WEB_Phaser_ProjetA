@@ -114,6 +114,7 @@ function preload ()
     this.load.image('panel', 'assets/UI/panel.png');
     this.load.image('boat', 'assets/Objects/Boat.png');
     this.load.image('fishIcon', 'assets/Icons/Icons_07.png');
+    this.load.image('panel_endgame', 'assets/UI/panel_endgame.png');
 
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -259,6 +260,8 @@ function create ()
     this.add.image(300, 380, 'panel').setScale(1);
     this.add.image(325, 397, 'fishIcon').setScale(0.49);
 
+    
+
 
     //===================================================================================================
     //UI
@@ -382,7 +385,6 @@ function update ()
         fishingLines.create(209, 495, 'line_a');
         SpawnHook(209, 460);
         once_a = false;
-        console.log(this.time.now);
     }
     if(!Key_A_isPressed && once_a == false)
     {
@@ -500,6 +502,7 @@ function MoveFish(fish, speed)
     {
         currentMultiplier = 1;
         nbrOfFishCaughtInaRow = 0;
+        nbrOfFishMissed += 1;
         
     }
     if(fish.x < -5)
@@ -518,6 +521,9 @@ function PlaySong()
 {
     mainMusic.play();
 }
+
+var maxFish = 30;
+
 function SONG_ONE(game)
 {
 
@@ -534,8 +540,8 @@ function SONG_ONE(game)
     //Nom des poissons : Paul, Britney, Marcus, Kimberly
 
     let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
-    
-    for (var i = 0; i < 100; i++) 
+
+    for (var i = 0; i < maxFish; i++) 
     {
         var a = Phaser.Math.Between(0, 3);
         var b = rand[a];
@@ -564,7 +570,10 @@ function CreateFish(x, y, type, game)
 
     //game.physics.add.overlap(hook, fishes.children.entries.length, FishIsInHook, null, this);  
     
-    
+    if(fishes.children.entries.length == maxFish)
+    {
+        game.time.addEvent({ delay: 5000, callback: ShowEndgamePanel, args:[game], callbackScope: this});
+    }//ICI METTRE PALLIERS
 
 }
 
@@ -583,6 +592,7 @@ var currentScore = 0;
 var currentMultiplier = 1;
 var nbrOfFishCaughtInaRow = 0;
 var nbrOfFishCaughtInTotal = 0;
+var nbrOfFishMissed = 0;
 
 function addScore(scoreToAdd)
 {
@@ -605,19 +615,30 @@ function UpdatePanel(score, multi, row)
     inARowText.setText(row);
 }
 
+var finaltext;
+
+function ShowEndgamePanel(game)
+{
+    game.add.image(400, 300, 'panel_endgame');
+    finaltext = game.add.text(400,300);
+    finaltext.setText("Cela fonctionne");
+}
+
 /*
 TO-DO : 
-- Menu principal : bouton jouer (lance une partie et la musique)
-- Mettre la musique dans le jeu et faire les notes en tempo avec les poissons
+- Menu principal : bouton jouer (lance une partie et la musique) : V
+- Mettre la musique dans le jeu et faire les notes en tempo avec les poissons : X
 - Afficher le score, développer les multiplicateurs : V
 - Meilleur score persistant
 - Détecter quand le joueur rate un poisson : V
-- Mettre le score, multiplicateur et poisson d'affilé dans la zone de jeu
+- Mettre le score, multiplicateur et poisson d'affilé dans la zone de jeu : V
 - Ajout titre : V
 - Polish général 
     - Ajout de bulles
     - Ajout de nuages : V
 
 - Fix le fait de choper un poisson depuis une autre ligne : V
+- Augmenter la vitesse des poissons par palliers
+- Recap de fin de partie : score de fin, série la plus longue ?, total de poissons capturés sur total de poissons
 
 */
