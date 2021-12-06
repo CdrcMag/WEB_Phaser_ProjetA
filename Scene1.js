@@ -108,6 +108,8 @@ function preload ()
     this.load.image('btn_jouer', 'assets/UI/jouer.png');
     this.load.image('btn_jouer_hover', 'assets/UI/jouer_hover.png');
     this.load.image('titre', 'assets/UI/titre.png');
+    this.load.image('panel', 'assets/UI/panel.png');
+    this.load.image('boat', 'assets/Objects/Boat.png');
 
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -244,7 +246,11 @@ function create ()
     this.add.image(100, 590, 'herb1');
     //
     this.add.image(400,300, 'clouds').setAlpha(0.3);
-    this.add.image(400,300, 'titre').setScale(0.9);
+    this.add.image(400,300, 'titre').setScale(0.95);
+    //
+    this.add.image(300, 432, 'boat').setScale(1);
+    this.add.image(300, 398, 'Pillar1');
+    this.add.image(300, 380, 'panel').setScale(1);
 
 
     //===================================================================================================
@@ -288,14 +294,28 @@ function create ()
     //mainMusic = this.sound.add("Song1"); 
     //mainMusic.play();  
 
-    multiplierText = this.add.text(200,400);
-    multiplierText.setTint(0xff0000, 0xff0000, 0xff0000, 0xff0000);
+    scoreText = this.add.text(270,355);
+    scoreText.setTint(0x642E11);
 
-    //multiplierText.setText('TEXTE DE TEST');
+    multiplierText = this.add.text(270,355 + ecart);
+    multiplierText.setTint(0x642E11);
+
+    inARowText = this.add.text(270,355 + ecart * 2);
+    inARowText.setTint(0x642E11);
+
+    // scoreText.setText('SCORE');
+    // multiplierText.setText('MULTI');
+    // inARowText.setText('ROW');
+
+    UpdatePanel(0, 1, 0);
 }
 
 var mainMusic;
 var multiplierText;
+var scoreText;
+var inARowText;
+
+var ecart = 17.5;
 
 //===========================================================================================================//
 //===========================================================================================================//
@@ -416,6 +436,9 @@ function update ()
         once_r = true;
     }
 
+    //Met à jour le tableau de scores
+    UpdatePanel(currentScore, currentMultiplier, nbrOfFishCaughtInaRow);
+
     //Mise à jour des textes
     //multiplierText.setText("Score : " + currentScore);
     //multiplierText.setText(currentMultiplier);
@@ -455,6 +478,8 @@ function CheckIfHasFish()
 
         //Gère le score
         addScore(100);
+
+
     }
 }
     
@@ -559,9 +584,17 @@ function addScore(scoreToAdd)
 
     currentScore += scoreToAdd * currentMultiplier;
     nbrOfFishCaughtInTotal += 1;
+
     //console.log("Score : " + currentScore + " / " + "Row : " + nbrOfFishCaughtInaRow + " / m : " + currentMultiplier);
     //console.log(nbrOfFishCaughtInaRow);
     
+}
+
+function UpdatePanel(score, multi, row)
+{
+    scoreText.setText(score);
+    multiplierText.setText(multi);
+    inARowText.setText(row);
 }
 
 /*
@@ -571,7 +604,8 @@ TO-DO :
 - Afficher le score, développer les multiplicateurs : V
 - Meilleur score persistant
 - Détecter quand le joueur rate un poisson : V
-- Ajout titre
+- Mettre le score, multiplicateur et poisson d'affilé dans la zone de jeu
+- Ajout titre : V
 - Polish général 
     - Ajout de bulles
     - Ajout de nuages : V
