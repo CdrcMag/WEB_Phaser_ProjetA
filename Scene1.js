@@ -92,10 +92,10 @@ function preload ()
     this.load.image('clouds', 'assets/Objects/clouds.png');
 
     //Poissons
-    this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');
-    this.load.image('fish_2', 'assets/Objects/Catch/2_solo.png');
-    this.load.image('fish_3', 'assets/Objects/Catch/3_solo.png');
-    this.load.image('fish_4', 'assets/Objects/Catch/4_solo.png');
+    this.load.image('fish_1', 'assets/Objects/Catch/1_solo.png');//petit brun = Paul
+    this.load.image('fish_2', 'assets/Objects/Catch/2_solo.png');//petit vert = Marcus
+    this.load.image('fish_3', 'assets/Objects/Catch/3_solo.png');//requin = Britney
+    this.load.image('fish_4', 'assets/Objects/Catch/4_solo.png');//baleine = Kimberly
 
     //Lignes de pêche
     this.load.image('line_a', 'assets/Objects/line_a.png');
@@ -110,6 +110,7 @@ function preload ()
     this.load.image('titre', 'assets/UI/titre.png');
     this.load.image('panel', 'assets/UI/panel.png');
     this.load.image('boat', 'assets/Objects/Boat.png');
+    this.load.image('fishIcon', 'assets/Icons/Icons_07.png');
 
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -120,7 +121,7 @@ function preload ()
     this.load.spritesheet('fish_3_anim', 'assets/Objects/Catch/3_anim.png', { frameWidth: 54, frameHeight: 22 });
     this.load.spritesheet('fish_4_anim', 'assets/Objects/Catch/4_anim.png', { frameWidth: 30, frameHeight: 12 });
     //
-    //this.load.audio('Song1', 'assets/SONG_ONE.mp3');
+    this.load.audio('Song1', 'assets/Kmaro-FemmeLikeU.mp3');
 }
 
 //===========================================================================================================//
@@ -251,6 +252,7 @@ function create ()
     this.add.image(300, 432, 'boat').setScale(1);
     this.add.image(300, 398, 'Pillar1');
     this.add.image(300, 380, 'panel').setScale(1);
+    this.add.image(325, 397, 'fishIcon').setScale(0.49);
 
 
     //===================================================================================================
@@ -528,7 +530,7 @@ function SONG_ONE(game)
 
     let rand = [fishSpawnPointY_a, fishSpawnPointY_z, fishSpawnPointY_e, fishSpawnPointY_r];
     
-    for (var i = 0; i < 20; i++) 
+    for (var i = 0; i < 100; i++) 
     {
         var a = Phaser.Math.Between(0, 3);
         var b = rand[a];
@@ -543,8 +545,8 @@ function CreateFish(x, y, type, game)
     var scale;
 
     if(type == 1) {name = 'fish_1'; scale = 1.5;}
-    if(type == 2) {name = 'fish_2'; scale = 1.6;}
-    if(type == 3) {name = 'fish_3'; scale = 1.0;}
+    if(type == 2) {name = 'fish_2'; scale = 1.4;}
+    if(type == 3) {name = 'fish_3'; scale = 0.8;}
     if(type == 4) {name = 'fish_4'; scale = 1.2;}
 
     fishes.create(x, y, name).setScale(scale);
@@ -593,7 +595,7 @@ function addScore(scoreToAdd)
 function UpdatePanel(score, multi, row)
 {
     scoreText.setText(score);
-    multiplierText.setText(multi);
+    multiplierText.setText("X"+multi);
     inARowText.setText(row);
 }
 
@@ -610,6 +612,6 @@ TO-DO :
     - Ajout de bulles
     - Ajout de nuages : V
 
-- Fix le fait de choper un poisson depuis une autre ligne
+- Fix le fait de choper un poisson depuis une autre ligne : V
 
 */
