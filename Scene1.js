@@ -73,6 +73,15 @@ var config = {
 
     var mainMusic;
     var hitSound;
+    var multiplierText;
+    var scoreText;
+    var inARowText;
+    var tutoPanel;
+
+    var ecart = 17.5;
+
+    var currentSpeed = -4.5;
+    var speed_stage_1 = -5;
 //===========================================================================================================//
 //===========================================================================================================//
 //                                              PRELOAD
@@ -115,6 +124,7 @@ function preload ()
     this.load.image('boat', 'assets/Objects/Boat.png');
     this.load.image('fishIcon', 'assets/Icons/Icons_07.png');
     this.load.image('panel_endgame', 'assets/UI/panel_endgame.png');
+    this.load.image('panel_tuto', 'assets/UI/Panel_tuto.png');
 
     //Chargement des animations
     this.load.spritesheet('player_idle', 'assets/Fisherman/Fisherman_idle.png', { frameWidth: 48, frameHeight: 48 });
@@ -136,7 +146,7 @@ function preload ()
 //===========================================================================================================//
 function create ()
 {
-    mainMusic = this.sound.add("Song1", {volume: 0.5});
+    mainMusic = this.sound.add("Song1", {volume: 0.08});
     hitSound = this.sound.add("hit", {volume: 0.05});
 
     //Création de l'arrière plan
@@ -259,9 +269,10 @@ function create ()
     this.add.image(300, 398, 'Pillar1');
     this.add.image(300, 380, 'panel').setScale(1);
     this.add.image(325, 397, 'fishIcon').setScale(0.49);
+    tutoPanel = this.add.image(400,200, 'panel_tuto');
 
     
-
+//B34D54
 
     //===================================================================================================
     //UI
@@ -311,11 +322,7 @@ function create ()
     UpdatePanel(0, 1, 0);
 }
 
-var multiplierText;
-var scoreText;
-var inARowText;
 
-var ecart = 17.5;
 
 //===========================================================================================================//
 //===========================================================================================================//
@@ -341,7 +348,7 @@ function update ()
     //Gère les déplacements et les animations des poissons
     for (var i = 0; i < fishes.children.entries.length; i++) 
     {
-        MoveFish(fishes.children.entries[i], -3.34);
+        MoveFish(fishes.children.entries[i], currentSpeed);
         HandleAnimation(fishes.children.entries[i]);
     }
 
@@ -522,13 +529,14 @@ function PlaySong()
     mainMusic.play();
 }
 
-var maxFish = 30;
+var maxFish = 50;
 
 function SONG_ONE(game)
 {
 
-    //Désactive le bouton "jouer"
+    //Désactive le bouton "jouer" et le panel de tuto
     btn_jouer.destroy();
+    tutoPanel.destroy();
 
     //Lance la musique
     
@@ -547,7 +555,6 @@ function SONG_ONE(game)
         var b = rand[a];
         CreateStep(game, i * 1000, fishSpawnPointX, b, Phaser.Math.Between(1,4));
     }
-
   
 }
 
@@ -567,13 +574,11 @@ function CreateFish(x, y, type, game)
     if(type == 2) {fishes.children.entries[fishes.children.entries.length-1].name = "Marcus";}
     if(type == 3) {fishes.children.entries[fishes.children.entries.length-1].name = "Britney";}
     if(type == 4) {fishes.children.entries[fishes.children.entries.length-1].name = "Kimberly";}
-
-    //game.physics.add.overlap(hook, fishes.children.entries.length, FishIsInHook, null, this);  
     
     if(fishes.children.entries.length == maxFish)
     {
         game.time.addEvent({ delay: 5000, callback: ShowEndgamePanel, args:[game], callbackScope: this});
-    }//ICI METTRE PALLIERS
+    }
 
 }
 
@@ -581,6 +586,7 @@ function CreateStep(game, delay, x, y, type)
 {
     //Game, delay, position X, position Y, type de poisson
     game.time.addEvent({ delay: delay, callback: CreateFish, args:[x, y, type, game], callbackScope: this});
+    
 }
 
 //===========================================================================================================//
@@ -591,6 +597,7 @@ function CreateStep(game, delay, x, y, type)
 var currentScore = 0;
 var currentMultiplier = 1;
 var nbrOfFishCaughtInaRow = 0;
+var nbrOfFishCaughtInARowMax = 0;
 var nbrOfFishCaughtInTotal = 0;
 var nbrOfFishMissed = 0;
 
@@ -603,8 +610,8 @@ function addScore(scoreToAdd)
     currentScore += scoreToAdd * currentMultiplier;
     nbrOfFishCaughtInTotal += 1;
 
-    //console.log("Score : " + currentScore + " / " + "Row : " + nbrOfFishCaughtInaRow + " / m : " + currentMultiplier);
-    //console.log(nbrOfFishCaughtInaRow);
+    if(nbrOfFishCaughtInaRow > nbrOfFishCaughtInARowMax)
+        nbrOfFishCaughtInARowMax = nbrOfFishCaughtInaRow;
     
 }
 
@@ -620,25 +627,18 @@ var finaltext;
 function ShowEndgamePanel(game)
 {
     game.add.image(400, 300, 'panel_endgame');
-    finaltext = game.add.text(400,300);
-    finaltext.setText("Cela fonctionne");
+    finaltext = game.add.text(300,260);
+    finaltext.setTint(0x642E11);
+    finaltext.setText(
+        "Félicitations, vous\navez fait " + currentScore + " points.\n" +
+        "Votre série la plus\nlongue a été de " + nbrOfFishCaughtInARowMax + "."
+        );
 }
 
 /*
 TO-DO : 
-- Menu principal : bouton jouer (lance une partie et la musique) : V
-- Mettre la musique dans le jeu et faire les notes en tempo avec les poissons : X
-- Afficher le score, développer les multiplicateurs : V
 - Meilleur score persistant
-- Détecter quand le joueur rate un poisson : V
-- Mettre le score, multiplicateur et poisson d'affilé dans la zone de jeu : V
-- Ajout titre : V
 - Polish général 
     - Ajout de bulles
-    - Ajout de nuages : V
-
-- Fix le fait de choper un poisson depuis une autre ligne : V
-- Augmenter la vitesse des poissons par palliers
-- Recap de fin de partie : score de fin, série la plus longue ?, total de poissons capturés sur total de poissons
 
 */
