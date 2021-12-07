@@ -44,3 +44,11 @@ Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi
 <img src="Captures/screenshot_2.PNG" width="400">
 
 ### Au 11/12/21
+- Ajout de sons
+- Fix de divers bugs
+- Ajout d'une bulle tutoriel
+- Mise à jour du titre et concept du jeu
+- Ajout de recap de fin de partie
+- Ajout d'un panneau de stats lors d'une partie
+
+<img src="Captures/screenshot_4.PNG" width="400">
