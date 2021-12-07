@@ -120,7 +120,7 @@ function preload ()
     this.load.image('btn_jouer', 'assets/UI/jouer.png');
     this.load.image('btn_jouer_hover', 'assets/UI/jouer_hover.png');
     this.load.image('titre', 'assets/UI/titre.png');
-    this.load.image('panel', 'assets/UI/panel.png');
+    this.load.image('panel', 'assets/UI/Panel.png');
     this.load.image('boat', 'assets/Objects/Boat.png');
     this.load.image('fishIcon', 'assets/Icons/Icons_07.png');
     this.load.image('panel_endgame', 'assets/UI/panel_endgame.png');
