@@ -2,6 +2,9 @@
 
 Phaser est un framework de jeu 2D utilisé pour créer des jeux en HTML5. Il utilise à la fois un moteur de rendu Canvas et WebGL.
 
+Démo jouable à cette adresse : 
+https://cdrcmag.github.io/WEB_Phaser_ProjetA/
+
 ## Résumé
 
 Bob le pêcheur pêche tranquillement sur son ponton lorsqu’il se sent investi par l’esprit du groove. Il décide alors de pêcher ses poissons sur un rythme endiablé.
