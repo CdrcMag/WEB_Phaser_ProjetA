@@ -123,7 +123,7 @@ function preload ()
     this.load.image('panel', 'assets/UI/Panel.png');
     this.load.image('boat', 'assets/Objects/Boat.png');
     this.load.image('fishIcon', 'assets/Icons/Icons_07.png');
-    this.load.image('panel_endgame', 'assets/UI/panel_endgame.png');
+    this.load.image('panel_endgame', 'assets/UI/Panel_endgame.png');
     this.load.image('panel_tuto', 'assets/UI/Panel_tuto.png');
 
     //Chargement des animations
